@@ -103,6 +103,11 @@ Additional Steps that might be used:
     sudo nano ssh/sshd_config
     ```
     Remove the line `PasswordAuthentication no`
+- add more CMA Memory
+    ```sh
+    sudo nano /boot/config.txt
+    ```
+    replace the line `dtoverlay=vc4-kms-v3d` with `dtoverlay=vc4-kms-v3d,cma-256` and reboot.
 
 ## Configuration
 
