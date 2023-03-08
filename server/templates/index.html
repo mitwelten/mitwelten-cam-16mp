@@ -1,0 +1,66 @@
+<html lang="en">
+
+<head>
+  <title>{{hostname}}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-light bg-light">
+    <div class="container-fluid py-2">
+      <a class="navbar-brand" href="/">HighRes PoE Camera Configuration</a>
+      <p class="m-0 lead">{{hostname}}</p>
+      <div class="d-flex">
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Overview</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/focus">Focus</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/status">Status</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/snapshot" target="_blank">Snapshot</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-6 p-4">
+        <h2>Current Settings</h2>
+        <h4>Resolution: <code id="width"> </code> <code> x </code> <code id="height"> </code></h4>
+        <h4>Quality: <code id="quality"></code></h4>
+        <h4>LensPostiton: <code id="lensposition"></code> ( ~<code id="distance"> </code><code>cm</code> )</h4>
+      </div>
+      <div class="col-6 p-4">
+        <img class="img-responsive mw-100 pb-4" src="/preview?size=720" id="preview_img">
+      </div>
+    </div>
+  </div>
+  <script>
+
+    function updateStats() {
+      fetch('/parameters')
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json);
+          document.getElementById("lensposition").innerHTML = json.lensposition;
+          document.getElementById("distance").innerHTML = json.distance_cm;
+          document.getElementById("quality").innerHTML = json.quality;
+          document.getElementById("width").innerHTML = json.width;
+          document.getElementById("height").innerHTML = json.height;
+        });
+    }
+    updateStats()
+  </script>
+
+</body>
+
+</html>

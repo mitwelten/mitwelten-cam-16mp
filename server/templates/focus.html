@@ -1,0 +1,135 @@
+<html lang="en">
+
+<head>
+    <title>{{hostname}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid py-2">
+            <a class="navbar-brand" href="/">HighRes PoE Camera Configuration</a>
+            <p class="m-0 lead">{{hostname}}</p>
+            <div class="d-flex">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link " aria-current="page" href="/">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/focus">Focus</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/status">Status</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/snapshot" target="_blank">Snapshot</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid p-4">
+        <div class="row h-auto">
+            <div class="col-4">
+                <h3>Current Settings</h3>
+                <h4>LensPosition: <b id="currval"> </b></h4>
+                <h4>Distance ~ <b id="currval_cm"></b> cm</h4>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Distance (cm)</span>
+                    <input type="number" class="form-control" id="distance" min="7" max="300" step="1"
+                        onchange="updateLensPosition(this.value)">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">LensPosition </span>
+                    <input type="number" class="form-control" id="lensposition" min="2.81" max="15" step="0.01"
+                        onchange="updateDistance(this.value)">
+
+                </div>
+                <button class="btn btn-success mb-3" type="button" id="button-addon2"
+                    onclick="sendLensPosition()">Update</button>
+                <p class="mb-1">Capture Metadata</p>
+                <pre class="font-monospace overflow-auto h-50 border" id="meta_json"></pre>
+            </div>
+            <div class="col-8">
+                <img class="img-responsive mw-100 pb-4" src="/preview" id="preview_img">
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function update_preview_image() {
+            var previewImgEl = document.getElementById('preview_img');
+            previewImgEl.src = '/preview?size=1200&capture&rand=' + Math.random();
+        }
+        function updateMetaJson() {
+            fetch('/metadata')
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+                    document.getElementById("meta_json").innerHTML = JSON.stringify(json, null, 4);;
+
+                });
+        }
+        function updateCurrentLensPos() {
+            fetch('/parameters')
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+                    document.getElementById("currval").innerHTML = json.lensposition;
+                    document.getElementById("currval_cm").innerHTML = json.distance_cm;
+
+                });
+        }
+        function updateInitialLensPos() {
+            fetch('/parameters')
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+                    document.getElementById("lensposition").value = json.lensposition;
+                    document.getElementById("distance").value = json.distance_cm;
+
+                });
+        }
+        updateInitialLensPos();
+        updateMetaJson();
+        updateCurrentLensPos();
+        setInterval(() => {
+            updateCurrentLensPos()
+        }, 2000)
+        setInterval(() => {
+            update_preview_image();
+            updateMetaJson();
+        }, 5000)
+
+        function updateLensPosition(distance) {
+            const lensPosition = 2.8028 + (83.4342 / (distance));
+            document.getElementById("lensposition").value = lensPosition.toFixed(2);
+        }
+
+        function updateDistance(lensPosition) {
+            const distance = 83.4342 / (lensPosition - 2.8028);
+            document.getElementById("distance").value = (distance).toFixed(0);
+        }
+
+        function sendLensPosition() {
+            const lensPosition = document.getElementById("lensposition").value;
+            const data = { lensPosition: lensPosition };
+            fetch('/parameters/lensposition', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error(error));
+        }
+    </script>
+</body>
+
+</html>

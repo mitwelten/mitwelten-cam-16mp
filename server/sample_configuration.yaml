@@ -1,0 +1,10 @@
+camera:
+  width: 4656
+  height: 3496
+  quality: 90
+  focus_file: focus.txt
+  default_focus: 4.8
+server:
+  port: 8080
+  username: MY_USER
+  password: MY_PASSWORD

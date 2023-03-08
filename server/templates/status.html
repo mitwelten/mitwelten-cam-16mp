@@ -1,0 +1,100 @@
+<html lang="en">
+
+<head>
+    <title>{{hostname}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid py-2">
+            <a class="navbar-brand" href="/">HighRes PoE Camera Configuration</a>
+            <p class="m-0 lead">{{hostname}}</p>
+            <div class="d-flex">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link " aria-current="page" href="/">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/focus">Focus</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/status">Status</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/snapshot" target="_blank">Snapshot</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid p-4">
+        <div class="pb-4">
+            <h3>last update <code id="time_code"></code></h3>
+        </div>
+        <div class="row">
+            <div class="col-4 pb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Temperature</h5>
+                        <h1> <code id="temperature"></code><code> °C</code> </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 pb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">CPU Usage</h5>
+                        <h1> <code id="cpu_pct"></code><code> %</code> </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 pb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Memory Usage</h5>
+                        <h1> <code id="mem_usage"></code><code> %</code> </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 pb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Network</h5>
+                        <h4>MAC: <code id="mac_addr"></code></h4>
+                        <h4>IP: <code id="ip_addr"></code> </h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+
+        function updateStats() {
+            fetch('/system')
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+                    document.getElementById("cpu_pct").innerHTML = json.cpu_pct;
+                    document.getElementById("temperature").innerHTML = json.temperature;
+                    document.getElementById("mem_usage").innerHTML = json.mem_usage;
+                    document.getElementById("mac_addr").innerHTML = json.mac_addr;
+                    document.getElementById("ip_addr").innerHTML = json.ip_addr;
+                    document.getElementById("time_code").innerHTML = json.time;
+                });
+        }
+
+        updateStats();
+        setInterval(() => {
+            updateStats();
+        }, 5000)
+
+    </script>
+</body>
+
+</html>
