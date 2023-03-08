@@ -1,6 +1,6 @@
 # mitwelten-cam-16mp
 
-## Setup
+## Raspberry Pi Setup
 
 Write the `Raspberry Pi OS Lite (64 Bit)` to an SD Card using Raspberry Pi Imager.
 - Set Hostname
@@ -8,6 +8,28 @@ Write the `Raspberry Pi OS Lite (64 Bit)` to an SD Card using Raspberry Pi Image
 - Select OS: `Raspberry Pi OS Lite (64 Bit)`
 - Select SD Card and click Write.
 
+## Setup Script
+
+Install the Camera dependencies
+```sh
+curl https://raw.githubusercontent.com/mitwelten/mitwelten-cam-16mp/main/scripts/install_camera_dependencies.sh | bash
+```
+Reboot 
+```sh
+sudo reboot
+```
+Clone this Repo and install dependencies
+```sh
+curl https://raw.githubusercontent.com/mitwelten/mitwelten-cam-16mp/main/scripts/install_mitwelten_cam.sh | bash
+```
+Add a systemd service to start the server automatically
+```sh
+curl https://raw.githubusercontent.com/mitwelten/mitwelten-cam-16mp/main/scripts/install_systemd_service.sh | bash
+```
+
+
+
+## Setup Step by Step
 
 Update & Upgrade
 
