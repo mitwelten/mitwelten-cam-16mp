@@ -73,24 +73,14 @@ http://your-camera-hostname.local:8080
 
 Additional Steps that might be used:
 
-Expand the Filesystem:
-
-`sudo raspi-config` &rarr; Advanced Options &rarr; Expand Filesystem
-
-Change password
-
-`sudo raspi-config` &rarr; System Options &rarr; Password &rarr; enter new password
-
-Change hostname
-
-`sudo raspi-config` &rarr; System Options &rarr; Hostname &rarr; enter new hostname
-
-
-Enable password authentication for ssh:
-```sh
-sudo nano ssh/sshd_config
-```
-Remove the line `PasswordAuthentication no`
+- Expand the Filesystem:  `sudo raspi-config` &rarr; Advanced Options &rarr; Expand Filesystem
+- Change password: `sudo raspi-config` &rarr; System Options &rarr; Password &rarr; enter new password
+- Change hostname: `sudo raspi-config` &rarr; System Options &rarr; Hostname &rarr; enter new hostname
+- Enable password authentication for ssh:
+    ```sh
+    sudo nano ssh/sshd_config
+    ```
+    Remove the line `PasswordAuthentication no`
 
 ## Configuration
 
