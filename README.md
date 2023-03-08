@@ -2,25 +2,12 @@
 
 ## Setup
 
+Write the `Raspberry Pi OS Lite (64 Bit)` to an SD Card using Raspberry Pi Imager.
+- Set Hostname
+- Create User and Password
+- Select OS: `Raspberry Pi OS Lite (64 Bit)`
+- Select SD Card and click Write.
 
-Expand the Filesystem:
-
-`sudo raspi-config` &rarr; Advanced Options &rarr; Expand Filesystem
-
-Change password
-
-`sudo raspi-config` &rarr; System Options &rarr; Password &rarr; enter new password
-
-Change hostname
-
-`sudo raspi-config` &rarr; System Options &rarr; Hostname &rarr; enter new hostname
-
-
-Enable password authentication for ssh:
-```sh
-sudo nano ssh/sshd_config
-```
-Remove the line `PasswordAuthentication no`
 
 Update & Upgrade
 
@@ -83,6 +70,27 @@ python3 app.py
 You can now access the camera in a web browser:
 http://your-camera-hostname.local:8080
 
+
+Additional Steps that might be used:
+
+Expand the Filesystem:
+
+`sudo raspi-config` &rarr; Advanced Options &rarr; Expand Filesystem
+
+Change password
+
+`sudo raspi-config` &rarr; System Options &rarr; Password &rarr; enter new password
+
+Change hostname
+
+`sudo raspi-config` &rarr; System Options &rarr; Hostname &rarr; enter new hostname
+
+
+Enable password authentication for ssh:
+```sh
+sudo nano ssh/sshd_config
+```
+Remove the line `PasswordAuthentication no`
 
 ## Configuration
 
