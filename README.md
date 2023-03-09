@@ -100,7 +100,7 @@ Additional Steps that might be used:
 - Change hostname: `sudo raspi-config` &rarr; System Options &rarr; Hostname &rarr; enter new hostname
 - Enable password authentication for ssh:
     ```sh
-    sudo nano ssh/sshd_config
+    sudo nano /etc/ssh/sshd_config
     ```
     Remove the line `PasswordAuthentication no`
 - add more CMA Memory
